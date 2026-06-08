@@ -1,0 +1,131 @@
+@startuml
+class com.example.ticketbooking.Models.Seat {
+- int row
+- char column
+- boolean isEmpty
++ boolean isEmpty()
++ void setEmpty(boolean)
++ String toString()
+}
+
+
+class com.example.ticketbooking.Models.Show {
+- Movie movie
+- Hall hall
+- Date startTime
+- Date endTime
+- int duration
+- double price
+}
+
+class com.example.ticketbooking.Application {
++ {static} void main(String[])
+}
+
+class com.example.ticketbooking.Models.Movie {
+- String name
+- int duration_in_minutes
+- Enums.Genre genre
+- Enums.Language language
++ String getName()
++ void setName(String)
++ int getDuration_in_minutes()
++ void setDuration_in_minutes(int)
++ Enums.Genre getGenre()
++ void setGenre(Enums.Genre)
++ Enums.Language getLanguage()
++ void setLanguage(Enums.Language)
+}
+
+
+class com.example.ticketbooking.Models.Cinema {
+- Enums.City city
+- String name
+- String address
+~ ArrayList<Hall> halls
+~ ArrayList<Show> shows
+~ HashMap<Movie,ArrayList<Show>> movieToShowsMap
+~ void addShow(Show)
+}
+
+
+class com.example.ticketbooking.Models.Slot {
+- Date from
+- Date to
+- ArrayList<Seat> seats
+- String showId
++ Date getFrom()
++ void setFrom(Date)
++ Date getTo()
++ void setTo(Date)
++ ArrayList<Seat> getSeats()
++ void setSeats(ArrayList<Seat>)
++ String getShowId()
++ void setShowId(String)
+}
+
+
+class com.example.ticketbooking.Models.Hall {
+- String name
+- int totalSeats
+- Enums.ScreenType screenType
+- List<Slot> slots
++ String getName()
++ void setName(String)
++ int getTotalSeats()
++ void setTotalSeats(int)
++ Enums.ScreenType getScreenType()
++ void setScreenType(Enums.ScreenType)
++ List<Slot> getSlots()
++ void setSlots(List<Slot>)
+}
+
+
+class com.example.ticketbooking.Enum.Enums {
+}
+enum com.example.ticketbooking.Enum.Genre {
++  ACTION
++  COMEDY
++  DRAMA
++  HORROR
++  ROMANCE
++  THRILLER
++  DOCUMENTARY
++  ANIMATION
++  OTHER
+}
+
+enum com.example.ticketbooking.Enum.City {
++  MUMBAI
++  DELHI
++  BANGALORE
++  HYDERABAD
++  CHENNAI
++  KOLKATA
++  OTHER
+}
+
+enum com.example.ticketbooking.Enum.Language {
++  ENGLISH
++  HINDI
++  FRENCH
++  SPANISH
++  OTHER
+}
+
+enum com.example.ticketbooking.Enum.SeatStatus {
++  EMPTY
++  RESERVED
++  OCCUPIED
++  UNAVAILABLE
+}
+
+enum com.example.ticketbooking.Enum.ScreenType {
++  TWO_D
++  THREE_D
++  IMAX
++  FOUR_D
++  OTHER
+}
+
+@enduml

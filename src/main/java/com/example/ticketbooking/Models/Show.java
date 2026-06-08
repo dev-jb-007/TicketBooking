@@ -1,7 +1,11 @@
 package com.example.ticketbooking.Models;
 
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.Date;
+@Getter
+@Setter
 public class Show{
     private Movie movie;
     private Hall hall;

@@ -10,6 +10,9 @@ public class Enums {
         ACTION, COMEDY, DRAMA, HORROR, ROMANCE, THRILLER, DOCUMENTARY, ANIMATION, OTHER
     }
 
+    public enum City{
+        MUMBAI, DELHI, BANGALORE, HYDERABAD, CHENNAI, KOLKATA, OTHER
+    }
     public enum Language {
         ENGLISH, HINDI, FRENCH, SPANISH, OTHER
     }

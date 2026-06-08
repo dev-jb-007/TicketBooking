@@ -1,5 +1,10 @@
 package com.example.ticketbooking.Models;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Seat {
     // ...existing code...
     private int row;
@@ -17,23 +22,6 @@ public class Seat {
         this.column = column;
         this.isEmpty = isEmpty;
     }
-
-    public int getRow() {
-        return row;
-    }
-
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    public char getColumn() {
-        return column;
-    }
-
-    public void setColumn(char column) {
-        this.column = column;
-    }
-
     public boolean isEmpty() {
         return isEmpty;
     }
