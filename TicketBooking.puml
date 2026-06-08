@@ -1,14 +1,4 @@
 @startuml
-class com.example.ticketbooking.Models.Seat {
-- int row
-- char column
-- boolean isEmpty
-+ boolean isEmpty()
-+ void setEmpty(boolean)
-+ String toString()
-}
-
-
 class com.example.ticketbooking.Models.Show {
 - Movie movie
 - Hall hall
@@ -20,6 +10,12 @@ class com.example.ticketbooking.Models.Show {
 
 class com.example.ticketbooking.Application {
 + {static} void main(String[])
+}
+
+class com.example.ticketbooking.Models.User {
+~ String name
+~ Enums.City city
+~ Enums.Role role
 }
 
 class com.example.ticketbooking.Models.Movie {
@@ -46,22 +42,37 @@ class com.example.ticketbooking.Models.Cinema {
 ~ ArrayList<Show> shows
 ~ HashMap<Movie,ArrayList<Show>> movieToShowsMap
 ~ void addShow(Show)
+~ ArrayList<Show> getShowsByMovie(Movie)
 }
 
 
-class com.example.ticketbooking.Models.Slot {
-- Date from
-- Date to
-- ArrayList<Seat> seats
-- String showId
-+ Date getFrom()
-+ void setFrom(Date)
-+ Date getTo()
-+ void setTo(Date)
-+ ArrayList<Seat> getSeats()
-+ void setSeats(ArrayList<Seat>)
-+ String getShowId()
-+ void setShowId(String)
+class com.example.ticketbooking.Models.Payment {
+~ Enums.PaymentType paymentType
+~ double amount
+~ Date paymentDate
+~ User user
+~ Enums.PaymentStatus paymentStatus
+~ String description
+~ String phoneNumber
+}
+
+class com.example.ticketbooking.Models.Payment$PaymentBuilder {
++ Enums.PaymentType paymentType
+~ double amount
+~ Date paymentDate
+~ User user
+~ Enums.PaymentStatus paymentStatus
+~ String description
+~ String phoneNumber
+~ void PaymentTypeSetter(Enums.PaymentType)
+~ void DescriptionSetter(String)
+~ void PhoneNumberSetter(String)
++ PaymentBuilder setPaymentType(Enums.PaymentType)
++ PaymentBuilder setAmount(double)
++ PaymentBuilder setPaymentDate(Date)
++ PaymentBuilder setUser(User)
++ PaymentBuilder setPaymentStatus(Enums.PaymentStatus)
++ Payment build()
 }
 
 
@@ -78,6 +89,51 @@ class com.example.ticketbooking.Models.Hall {
 + void setScreenType(Enums.ScreenType)
 + List<Slot> getSlots()
 + void setSlots(List<Slot>)
+}
+
+
+class com.example.ticketbooking.Models.Seat {
+- int row
+- char column
+- boolean isEmpty
++ boolean isEmpty()
++ void setEmpty(boolean)
++ String toString()
+}
+
+
+interface com.example.ticketbooking.Strategy.PaymentStrategy.PaymentStrategy {
++ Payment processPayment(User,double)
+}
+
+class com.example.ticketbooking.Strategy.PaymentStrategy.UPIpayment {
+- String upiId
++ Payment processPayment(User,double)
+}
+
+
+class com.example.ticketbooking.Strategy.PaymentStrategy.CardPayment {
+- String cardNumber
+- String cardHolderName
+- String expiryDate
+- String cvv
++ Payment processPayment(User,double)
+}
+
+
+class com.example.ticketbooking.Models.Slot {
+- Date from
+- Date to
+- ArrayList<Seat> seats
+- String showId
++ Date getFrom()
++ void setFrom(Date)
++ Date getTo()
++ void setTo(Date)
++ ArrayList<Seat> getSeats()
++ void setSeats(ArrayList<Seat>)
++ String getShowId()
++ void setShowId(String)
 }
 
 
@@ -128,4 +184,27 @@ enum com.example.ticketbooking.Enum.ScreenType {
 +  OTHER
 }
 
+enum com.example.ticketbooking.Enum.Role {
++  ADMIN
++  CUSTOMER
+}
+
+enum com.example.ticketbooking.Enum.PaymentType {
++  CARD
++  NET_BANKING
++  UPI
++  OTHER
+}
+
+enum com.example.ticketbooking.Enum.PaymentStatus {
++  SUCCESS
++  FAILED
++  PENDING
+}
+
+
+
+com.example.ticketbooking.Models.Payment +.. com.example.ticketbooking.Models.Payment$PaymentBuilder
+com.example.ticketbooking.Strategy.PaymentStrategy.PaymentStrategy <|.. com.example.ticketbooking.Strategy.PaymentStrategy.UPIpayment
+com.example.ticketbooking.Strategy.PaymentStrategy.PaymentStrategy <|.. com.example.ticketbooking.Strategy.PaymentStrategy.CardPayment
 @enduml

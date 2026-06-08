@@ -24,6 +24,18 @@ public class Enums {
     public enum ScreenType{
         TWO_D, THREE_D, IMAX, FOUR_D, OTHER
     }
+
+    public enum Role{
+        ADMIN,CUSTOMER
+    }
+
+    public enum PaymentType{
+        CARD, NET_BANKING, UPI, OTHER
+    }
+
+    public enum PaymentStatus{
+        SUCCESS, FAILED, PENDING
+    }
     // Note: String-to-enum conversion logic has been intentionally removed. Consumers should
     // construct enums directly (e.g., Enums.Genre.ACTION) or implement their own mapping.
 }
