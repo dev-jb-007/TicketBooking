@@ -34,7 +34,7 @@ public class Enums {
     }
 
     public enum PaymentStatus{
-        SUCCESS, FAILED, PENDING
+        SUCCESS, FAILED, PENDING, REVERT, REFUNDED
     }
     // Note: String-to-enum conversion logic has been intentionally removed. Consumers should
     // construct enums directly (e.g., Enums.Genre.ACTION) or implement their own mapping.

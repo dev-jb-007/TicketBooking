@@ -18,21 +18,24 @@ class com.example.ticketbooking.Models.User {
 ~ Enums.Role role
 }
 
+class com.example.ticketbooking.Models.User$UserBuilder {
+~ String name
+~ Enums.City city
+~ Enums.Role role
++ UserBuilder setName(String)
++ UserBuilder setCity(Enums.City)
++ UserBuilder setRole(Enums.Role)
++ User build()
+}
+
+
 class com.example.ticketbooking.Models.Movie {
 - String name
 - int duration_in_minutes
 - Enums.Genre genre
 - Enums.Language language
-+ String getName()
-+ void setName(String)
-+ int getDuration_in_minutes()
-+ void setDuration_in_minutes(int)
-+ Enums.Genre getGenre()
-+ void setGenre(Enums.Genre)
-+ Enums.Language getLanguage()
-+ void setLanguage(Enums.Language)
+- ArrayList<Show> shows
 }
-
 
 class com.example.ticketbooking.Models.Cinema {
 - Enums.City city
@@ -46,33 +49,36 @@ class com.example.ticketbooking.Models.Cinema {
 }
 
 
-class com.example.ticketbooking.Models.Payment {
-~ Enums.PaymentType paymentType
-~ double amount
-~ Date paymentDate
-~ User user
-~ Enums.PaymentStatus paymentStatus
-~ String description
-~ String phoneNumber
+class com.example.ticketbooking.Builder.Payment {
+- Enums.PaymentType paymentType
+- double amount
+- Date paymentDate
+- User user
+- Enums.PaymentStatus paymentStatus
+- String description
+- String phoneNumber
++ void setPaymentStatus(Enums.PaymentStatus)
 }
 
-class com.example.ticketbooking.Models.Payment$PaymentBuilder {
-+ Enums.PaymentType paymentType
-~ double amount
-~ Date paymentDate
-~ User user
-~ Enums.PaymentStatus paymentStatus
-~ String description
-~ String phoneNumber
-~ void PaymentTypeSetter(Enums.PaymentType)
-~ void DescriptionSetter(String)
-~ void PhoneNumberSetter(String)
-+ PaymentBuilder setPaymentType(Enums.PaymentType)
-+ PaymentBuilder setAmount(double)
-+ PaymentBuilder setPaymentDate(Date)
-+ PaymentBuilder setUser(User)
-+ PaymentBuilder setPaymentStatus(Enums.PaymentStatus)
+
+class com.example.ticketbooking.Builder.Payment$PaymentBuilder {
+- Enums.PaymentType paymentType
+- double amount
+- Date paymentDate
+- User user
+- Enums.PaymentStatus paymentStatus
+- String description
+- String phoneNumber
++ PaymentBuilder setDescription(String)
++ PaymentBuilder setPhoneNumber(String)
 + Payment build()
+}
+
+
+class com.example.ticketbooking.Factory.PaymentFactory.PaymentFactory {
+- {static} PaymentFactory instance
++ {static} PaymentFactory getInstance()
++ PaymentStrategy createPayment(String)
 }
 
 
@@ -81,16 +87,7 @@ class com.example.ticketbooking.Models.Hall {
 - int totalSeats
 - Enums.ScreenType screenType
 - List<Slot> slots
-+ String getName()
-+ void setName(String)
-+ int getTotalSeats()
-+ void setTotalSeats(int)
-+ Enums.ScreenType getScreenType()
-+ void setScreenType(Enums.ScreenType)
-+ List<Slot> getSlots()
-+ void setSlots(List<Slot>)
 }
-
 
 class com.example.ticketbooking.Models.Seat {
 - int row
@@ -101,6 +98,13 @@ class com.example.ticketbooking.Models.Seat {
 + String toString()
 }
 
+
+interface com.example.ticketbooking.Proxy.CinemaProxy.CinemaManage {
+~ void createCinema(String,String,String)
+~ void createHall(Cinema,String,int,Enums.ScreenType)
+~ void createShow(Cinema,String,Movie,String,String)
+~ void createMovie(String,int,Enums.Genre,Enums.Language)
+}
 
 interface com.example.ticketbooking.Strategy.PaymentStrategy.PaymentStrategy {
 + Payment processPayment(User,double)
@@ -121,19 +125,28 @@ class com.example.ticketbooking.Strategy.PaymentStrategy.CardPayment {
 }
 
 
+class com.example.ticketbooking.Proxy.CinemaProxy.CinemaManager {
++ void createCinema(String,String,String)
++ void createHall(Cinema,String,int,Enums.ScreenType)
++ void createShow(Cinema,String,Movie,String,String)
++ void createMovie(String,int,Enums.Genre,Enums.Language)
+}
+
 class com.example.ticketbooking.Models.Slot {
 - Date from
 - Date to
 - ArrayList<Seat> seats
 - String showId
-+ Date getFrom()
-+ void setFrom(Date)
-+ Date getTo()
-+ void setTo(Date)
-+ ArrayList<Seat> getSeats()
-+ void setSeats(ArrayList<Seat>)
-+ String getShowId()
-+ void setShowId(String)
+}
+
+class com.example.ticketbooking.Proxy.CinemaProxy.CinemaProxy {
+- CinemaManage CinemaManager
+- User user
+~ boolean verifyAdminAccess(User)
++ void createCinema(String,String,String)
++ void createHall(Cinema,String,int,Enums.ScreenType)
++ void createShow(Cinema,String,Movie,String,String)
++ void createMovie(String,int,Enums.Genre,Enums.Language)
 }
 
 
@@ -200,11 +213,16 @@ enum com.example.ticketbooking.Enum.PaymentStatus {
 +  SUCCESS
 +  FAILED
 +  PENDING
++  REVERT
++  REFUNDED
 }
 
 
 
-com.example.ticketbooking.Models.Payment +.. com.example.ticketbooking.Models.Payment$PaymentBuilder
+com.example.ticketbooking.Models.User +.. com.example.ticketbooking.Models.User$UserBuilder
+com.example.ticketbooking.Builder.Payment +.. com.example.ticketbooking.Builder.Payment$PaymentBuilder
 com.example.ticketbooking.Strategy.PaymentStrategy.PaymentStrategy <|.. com.example.ticketbooking.Strategy.PaymentStrategy.UPIpayment
 com.example.ticketbooking.Strategy.PaymentStrategy.PaymentStrategy <|.. com.example.ticketbooking.Strategy.PaymentStrategy.CardPayment
+com.example.ticketbooking.Proxy.CinemaProxy.CinemaManage <|.. com.example.ticketbooking.Proxy.CinemaProxy.CinemaManager
+com.example.ticketbooking.Proxy.CinemaProxy.CinemaManage <|.. com.example.ticketbooking.Proxy.CinemaProxy.CinemaProxy
 @enduml

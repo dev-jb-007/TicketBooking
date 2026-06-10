@@ -11,9 +11,30 @@ public class User {
     Enums.City city;
     Enums.Role role;
 
-     User(String name, Enums.City city, Enums.Role role) {
-        this.name = name;
-        this.city = city;
-        this.role = role;
+     User(UserBuilder builder) {
+         this.name = builder.name;
+         this.city = builder.city;
+         this.role = builder.role;
+    }
+    public static class UserBuilder{
+         String name;
+         Enums.City city;
+         Enums.Role role;
+
+        public UserBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+        public UserBuilder setCity(Enums.City city) {
+            this.city = city;
+            return this;
+        }
+        public UserBuilder setRole(Enums.Role role) {
+            this.role = role;
+            return this;
+        }
+        public User build() {
+            return new User(this);
+        }
     }
 }
