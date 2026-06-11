@@ -17,7 +17,7 @@ public class Cinema {
     ArrayList<Show> shows;
     HashMap<Movie, ArrayList<Show>> movieToShowsMap;
 
-    Cinema(Enums.City city, String name, String address) {
+    public Cinema(Enums.City city, String name, String address) {
         this.city = city;
         this.name = name;
         this.address = address;
@@ -33,6 +33,9 @@ public class Cinema {
         Movie movie = show.getMovie();
         movieToShowsMap.putIfAbsent(movie, new ArrayList<>());
         movieToShowsMap.get(movie).add(show);
+    }
+    public void addHall(Hall hall) {
+        halls.add(hall);
     }
     ArrayList<Show> getShowsByMovie(Movie movie) {
         return movieToShowsMap.getOrDefault(movie, new ArrayList<>());

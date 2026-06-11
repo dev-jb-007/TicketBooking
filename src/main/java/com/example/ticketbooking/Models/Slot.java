@@ -12,4 +12,10 @@ public class Slot {
     private Date to;
     private ArrayList<Seat> seats;
     private String showId;
+    public Slot(Date from, Date to, String showId) {
+        this.from = from;
+        this.to = to;
+        this.showId = showId;
+        this.seats = new ArrayList<>();
+    }
 }

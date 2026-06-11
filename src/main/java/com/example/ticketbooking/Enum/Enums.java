@@ -33,6 +33,10 @@ public class Enums {
         CARD, NET_BANKING, UPI, OTHER
     }
 
+    public enum BookingStatus{
+        CONFIRMED, CANCELLED, PENDING, REVERT
+    }
+
     public enum PaymentStatus{
         SUCCESS, FAILED, PENDING, REVERT, REFUNDED
     }

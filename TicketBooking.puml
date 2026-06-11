@@ -1,12 +1,26 @@
 @startuml
 class com.example.ticketbooking.Models.Show {
+- String showId
 - Movie movie
 - Hall hall
 - Date startTime
 - Date endTime
 - int duration
+- Cinema playedAt
 - double price
++ int getAvailableSeats()
++ ArrayList<Seat> selectSeats(int)
 }
+
+
+class com.example.ticketbooking.Manager.BookingManager {
+- {static} BookingManager instance
+- PaymentStrategy paymentStrategy
++ {static} BookingManager getInstance()
+~ void setPaymentStrategy(PaymentStrategy)
+~ Booking bookShow(Show,User,int)
+}
+
 
 class com.example.ticketbooking.Application {
 + {static} void main(String[])
@@ -45,6 +59,7 @@ class com.example.ticketbooking.Models.Cinema {
 ~ ArrayList<Show> shows
 ~ HashMap<Movie,ArrayList<Show>> movieToShowsMap
 ~ void addShow(Show)
++ void addHall(Hall)
 ~ ArrayList<Show> getShowsByMovie(Movie)
 }
 
@@ -87,6 +102,18 @@ class com.example.ticketbooking.Models.Hall {
 - int totalSeats
 - Enums.ScreenType screenType
 - List<Slot> slots
+~ int getAvailableSeatsForShow(Show)
+~ ArrayList<Seat> getSeatsForShow(Show)
++ boolean canAddShow(Date,Date)
+}
+
+
+class com.example.ticketbooking.Models.Booking {
+~ User user
+~ Show show
+~ ArrayList<Seat> seats
+~ Enums.BookingStatus bookingStatus
+~ Payment payment
 }
 
 class com.example.ticketbooking.Models.Seat {
@@ -100,10 +127,10 @@ class com.example.ticketbooking.Models.Seat {
 
 
 interface com.example.ticketbooking.Proxy.CinemaProxy.CinemaManage {
-~ void createCinema(String,String,String)
-~ void createHall(Cinema,String,int,Enums.ScreenType)
-~ void createShow(Cinema,String,Movie,String,String)
-~ void createMovie(String,int,Enums.Genre,Enums.Language)
++ Cinema createCinema(Enums.City,String,String)
++ void createHall(Cinema,String,int,Enums.ScreenType)
++ Show createShow(Cinema,Hall,Movie,Date,Date,double)
++ Movie createMovie(String,int,Enums.Genre,Enums.Language)
 }
 
 interface com.example.ticketbooking.Strategy.PaymentStrategy.PaymentStrategy {
@@ -125,11 +152,11 @@ class com.example.ticketbooking.Strategy.PaymentStrategy.CardPayment {
 }
 
 
-class com.example.ticketbooking.Proxy.CinemaProxy.CinemaManager {
-+ void createCinema(String,String,String)
+class com.example.ticketbooking.Manager.CinemaManager {
++ Cinema createCinema(Enums.City,String,String)
 + void createHall(Cinema,String,int,Enums.ScreenType)
-+ void createShow(Cinema,String,Movie,String,String)
-+ void createMovie(String,int,Enums.Genre,Enums.Language)
++ Show createShow(Cinema,Hall,Movie,Date,Date,double)
++ Movie createMovie(String,int,Enums.Genre,Enums.Language)
 }
 
 class com.example.ticketbooking.Models.Slot {
@@ -143,10 +170,10 @@ class com.example.ticketbooking.Proxy.CinemaProxy.CinemaProxy {
 - CinemaManage CinemaManager
 - User user
 ~ boolean verifyAdminAccess(User)
-+ void createCinema(String,String,String)
++ Cinema createCinema(Enums.City,String,String)
 + void createHall(Cinema,String,int,Enums.ScreenType)
-+ void createShow(Cinema,String,Movie,String,String)
-+ void createMovie(String,int,Enums.Genre,Enums.Language)
++ Show createShow(Cinema,Hall,Movie,Date,Date,double)
++ Movie createMovie(String,int,Enums.Genre,Enums.Language)
 }
 
 
@@ -209,6 +236,13 @@ enum com.example.ticketbooking.Enum.PaymentType {
 +  OTHER
 }
 
+enum com.example.ticketbooking.Enum.BookingStatus {
++  CONFIRMED
++  CANCELLED
++  PENDING
++  REVERT
+}
+
 enum com.example.ticketbooking.Enum.PaymentStatus {
 +  SUCCESS
 +  FAILED
@@ -223,6 +257,6 @@ com.example.ticketbooking.Models.User +.. com.example.ticketbooking.Models.User$
 com.example.ticketbooking.Builder.Payment +.. com.example.ticketbooking.Builder.Payment$PaymentBuilder
 com.example.ticketbooking.Strategy.PaymentStrategy.PaymentStrategy <|.. com.example.ticketbooking.Strategy.PaymentStrategy.UPIpayment
 com.example.ticketbooking.Strategy.PaymentStrategy.PaymentStrategy <|.. com.example.ticketbooking.Strategy.PaymentStrategy.CardPayment
-com.example.ticketbooking.Proxy.CinemaProxy.CinemaManage <|.. com.example.ticketbooking.Proxy.CinemaProxy.CinemaManager
+com.example.ticketbooking.Proxy.CinemaProxy.CinemaManage <|.. com.example.ticketbooking.Manager.CinemaManager
 com.example.ticketbooking.Proxy.CinemaProxy.CinemaManage <|.. com.example.ticketbooking.Proxy.CinemaProxy.CinemaProxy
 @enduml
